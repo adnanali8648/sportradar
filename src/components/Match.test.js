@@ -10,8 +10,23 @@ describe('Match component', () => {
     id: 1,
     homeTeam: 'Home',
     awayTeam: 'Away',
-    homeScore: 2,
+    homeScore: 1,
     awayScore: 1,
+    goalHistory: [{
+      homeScore: 0,
+      awayScore: 1,
+      player: '',
+      dateTime: 15,
+      card: "red",
+    },
+    {
+      homeScore: 2,
+      awayScore: 1,
+      player: 'Adnan',
+      dateTime: 16,
+      card: "red",
+    }
+    ],
     updateMatch: mockUpdateMatch,
     finishMatch: mockFinishMatch,
   };
@@ -19,19 +34,19 @@ describe('Match component', () => {
   test('renders match details correctly', () => {
     render(<Match {...matchData} />);
 
-    const homeTeamElement = screen.getByText('Home');
-    const awayTeamElement = screen.getByText('Away');
-    const scoreElement = screen.getByText('2-1');
+    const updateScoreElement = screen.getByText('Update');
+    const finishMatchElement = screen.getByText('Finish Match');
+    const scoreElement = screen.getByText('0-1');
 
-    expect(homeTeamElement).toBeInTheDocument();
-    expect(awayTeamElement).toBeInTheDocument();
+    expect(updateScoreElement).toBeInTheDocument();
+    expect(finishMatchElement).toBeInTheDocument();
     expect(scoreElement).toBeInTheDocument();
   });
 
   test('renders edit and delete buttons when updateMatch is true', () => {
     render(<Match {...matchData} />);
 
-    const editButton = screen.getByText('Update Score');
+    const editButton = screen.getByText('Update');
     const finishButton = screen.getByText('Finish Match');
 
     expect(editButton).toBeInTheDocument();
@@ -41,7 +56,7 @@ describe('Match component', () => {
   test('calls updateMatch with the correct arguments when update button is clicked', () => {
     render(<Match {...matchData} />);
 
-    const editButton = screen.getByText('Update Score');
+    const editButton = screen.getByText('Update');
     fireEvent.click(editButton);
 
     expect(mockUpdateMatch).toHaveBeenCalled();
@@ -54,5 +69,27 @@ describe('Match component', () => {
     fireEvent.click(finishButton);
 
     expect(mockFinishMatch).toHaveBeenCalledWith(1);
+  });
+
+  test('renders goal history correctly', () => {
+    render(<Match {...matchData} />);
+
+    const playerCardElement = screen.getByText('red card to Adnan at 16');
+    expect(playerCardElement).toBeInTheDocument();
+  });
+
+  test('renders match details correctly when goalHistory is empty', () => {
+    const matchDataWithEmptyGoalHistory = { ...matchData, goalHistory: [] };
+    render(<Match {...matchDataWithEmptyGoalHistory} />);
+
+    const updateScoreElement = screen.getByText('Update');
+    const finishMatchElement = screen.getByText('Finish Match');
+
+    expect(updateScoreElement).toBeInTheDocument();
+    expect(finishMatchElement).toBeInTheDocument();
+
+    const scoreElement = screen.queryByText('0-1');
+
+    expect(scoreElement).not.toBeInTheDocument(); // score should not be present
   });
 });

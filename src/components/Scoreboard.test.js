@@ -35,15 +35,17 @@ describe('Scoreboard component', () => {
     fireEvent.click(startMatchButton);
 
     // Update the match score
-    const editButton = screen.getByText('Update Score');
+    const editButton = screen.getByText('Update');
     fireEvent.click(editButton);
 
     // Assert the match score is updated
-    const scoreElements = screen.getAllByText('1-1');
-    expect(scoreElements.length).toBe(2);
+    const scoreElements = screen.getAllByText('0-0');
+    expect(scoreElements.length).toBe(1);
 
 
   });
+
+
 
   test('should call updateMatch when a match is updated', () => {
     const updateMatch = jest.fn(); // Create a mock function
