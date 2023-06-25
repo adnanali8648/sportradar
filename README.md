@@ -11,6 +11,10 @@ This will start the app in development mode on http://localhost:3000. You should
 ### Features:
 this app alow you to start update and finish matches in scorboard
 
+this app also shows the player name and time when any player do goal on update match info
+
+this app also shows the yelow or Red card issued to any player with time 
+
 ### Deployment
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
